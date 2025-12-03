@@ -2,11 +2,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getAllApiData } from "@/feature/myApi/queries/getAllApiData";
+import { handleCopy } from "@/feature/templates/components/template-card";
 import clsx from "clsx";
 import { FolderOpen, Plus } from "lucide-react";
 import Link from "next/link";
 
 import { redirect } from "next/navigation";
+import ClientSideButton from "./client-side-button";
+import ClientSideDeleteButton from "./ client-side-delete-button";
 
 export default async function ApiSection({
   searchParams,
@@ -67,12 +70,18 @@ export default async function ApiSection({
                       <p className="font-medium">{api.apiCalls}</p>
                       <p className="text-sm text-muted-foreground">calls</p>
                     </div>
-                    <Badge variant={api.isActive ? "default" : "secondary"}>
+                    <Badge
+                      className=""
+                      variant={api.isActive ? "default" : "secondary"}
+                    >
                       active
                     </Badge>
-                    <Button variant="outline" size="sm">
-                      Edit
-                    </Button>
+
+                    <ClientSideButton
+                      url={`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/${api.apiKey}/${api.endPointName}`}
+                    />
+                    <ClientSideDeleteButton id={api.id} />
+
                   </div>
                 </div>
               </CardContent>

@@ -7,11 +7,12 @@ import { schemaPresets, SchemaPresetType } from "@/helpers/schema-presets";
 type Params = { endPointName: SchemaPresetType };
 
 export async function GET(
-  _req: NextRequest,
+  req: Request,
   ctx: RouteContext<"/api/v1/presets/[endPointName]">
 ) {
   try {
-    const count = 50;
+    const { searchParams } = new URL(req.url);
+    const count = Number(searchParams.get("count") || 50);
     const { endPointName } = (await ctx.params) as Params;
 
     let resData;

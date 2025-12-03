@@ -17,18 +17,17 @@ type TemplateCardProps = {
   description: string;
   url: string;
 };
+export const handleCopy = async (url: string) => {
+  try {
+    await navigator.clipboard.writeText(url);
+    toast.success("URL copied!");
+  } catch (err) {
+    console.error("Failed to copy:", err);
+    toast.error("Failed to copy");
+  }
+};
 
 export function TemplateCard({ name, description, url }: TemplateCardProps) {
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(url);
-      toast.success("URL copied!");
-    } catch (err) {
-      console.error("Failed to copy:", err);
-      toast.error("Failed to copy");
-    }
-  };
-
   return (
     <Card className="cursor-pointer min-w-40 hover:shadow-md transition-shadow">
       <CardHeader>
@@ -38,7 +37,12 @@ export function TemplateCard({ name, description, url }: TemplateCardProps) {
       <CardContent>
         <div className="flex items-center justify-between gap-2">
           <Input readOnly value={url} />
-          <Button size="sm" onClick={handleCopy}>
+          <Button
+            size="sm"
+            onClick={async () => {
+              await handleCopy(url);
+            }}
+          >
             Copy Url
           </Button>
         </div>

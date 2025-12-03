@@ -66,6 +66,28 @@ Rules:
 - You must use only the mappers from the list provided below.
 - Do not invent new mappers or types.
 
+Warning (No Nested Objects Allowed)
+
+⚠️ IMPORTANT:
+You must never create nested objects inside the JSON template.
+Only simple key–value pairs are allowed.
+
+- No nested objects
+
+- No arrays
+
+- No multi-level structures
+
+Always return a flat, single-level object such as:
+
+{
+  "id": "string.uuid",
+  "name": "person.fullName",
+  "email": "internet.email",
+  "phone": "phone.number",
+}
+
+
 Output format:
 
 - Always return only raw JSON.
