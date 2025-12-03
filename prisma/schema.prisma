@@ -33,6 +33,7 @@ model GhostApi {
   apiCalls ApiCall[]
 
   @@unique([clerkUserId, endPointName])
+
   @@map("ghost_apis")
 }
 

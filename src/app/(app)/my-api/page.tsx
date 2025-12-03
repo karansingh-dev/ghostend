@@ -6,6 +6,7 @@ import ApiSection from "@/feature/myApi/components/api-section";
 import PageButtons from "@/feature/myApi/components/page-buttons";
 
 import { Plus } from "lucide-react";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default async function Page({
@@ -28,9 +29,11 @@ export default async function Page({
         <div>
           <div className="text-md text-foreground/50 flex justify-between">
             <span> Manage your existing mock APIs</span>
-            <Button variant="default">
-              <Plus /> Create New Api
-            </Button>
+            <Link href={"/create-api"}>
+              <Button variant="default">
+                <Plus /> Create New Api
+              </Button>
+            </Link>
           </div>
         </div>
         <div className="mt-15 w-full flex justify-between ">

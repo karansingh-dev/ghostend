@@ -2,7 +2,6 @@ import { generateData } from "@/helpers/dataGenerator";
 import { Response } from "@/helpers/response";
 import { validateApiKey } from "@/helpers/validateApiKey";
 import { prisma } from "@/lib/prisma";
-import { auth } from "@clerk/nextjs/server";
 import { NextRequest } from "next/server";
 
 type params = {
@@ -22,31 +21,28 @@ export async function handler(
     }
 
     const apiKeyExist = await prisma.apiKey.findUnique({
-      where: {
-        apiKey,
-      },
+      where: { apiKey },
       select: {
         id: true,
+        clerkUserId: true,
       },
     });
 
     if (!apiKeyExist)
       return Response.error(["Invalid api key", "api key does not exist"], 404);
 
-    const { userId } = await auth();
-    if (!userId)
-      return Response.error(["unauthorized access", "invalid userId"], 401);
-
     const { searchParams } = new URL(req.url);
     const count = Number(searchParams.get("count"));
+
     const apiData = await prisma.ghostApi.findUnique({
       where: {
         clerkUserId_endPointName: {
-          clerkUserId: userId,
+          clerkUserId: apiKeyExist.clerkUserId,
           endPointName,
         },
       },
     });
+
     if (!apiData)
       return Response.error(
         ["Invalid api url", "endpoint does not exist"],
@@ -63,7 +59,7 @@ export async function handler(
         ghostApiId: apiData.id,
         apiKeyId: apiKeyExist.id,
         ipAddress: req.headers.get("X-Forwarded-For"),
-        clerkUserId: userId,
+        clerkUserId: apiKeyExist.clerkUserId,
       },
     });
     return Response.success(resData);
