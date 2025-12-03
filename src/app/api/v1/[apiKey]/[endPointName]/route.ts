@@ -1,7 +1,6 @@
 import { generateData } from "@/helpers/dataGenerator";
 import { Response } from "@/helpers/response";
 import { validateApiKey } from "@/helpers/validateApiKey";
-import { ResolveValueInput } from "@/lib/faker";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest } from "next/server";
@@ -38,6 +37,8 @@ export async function handler(
     if (!userId)
       return Response.error(["unauthorized access", "invalid userId"], 401);
 
+    const { searchParams } = new URL(req.url);
+    const count = Number(searchParams.get("count"));
     const apiData = await prisma.ghostApi.findUnique({
       where: {
         clerkUserId_endPointName: {
@@ -53,8 +54,8 @@ export async function handler(
       );
 
     const resData = generateData(
-      apiData.jsonTemplate as { [key: string]: ResolveValueInput },
-      apiData.defaultCount
+      apiData.jsonTemplate as Record<string, string>,
+      count || apiData.defaultCount
     );
 
     await prisma.apiCall.create({

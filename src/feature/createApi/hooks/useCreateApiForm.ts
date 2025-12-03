@@ -4,21 +4,21 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useCreateApiStorevalue } from "./useCreateApiStore";
 import toast from "react-hot-toast";
 import { createGhostApi } from "../mutations/createApi";
-import { ResolveValueInput } from "@/lib/faker";
+
 import { useRouter } from "next/navigation";
 
 // example data
 export const exampleData = {
-  id: "uuid" as const,
-  firstName: "firstname" as const,
-  lastName: "lastname" as const,
-  email: "email" as const,
-  age: "age" as const,
-  phone: "phone" as const,
-  address: "address" as const,
-  city: "city" as const,
-  company: "company" as const,
-  jobTitle: "job" as const,
+  id: "string.uuid",
+  name: "person.fullName",
+  email: "internet.email",
+  phone: "phone.number",
+  city: "location.city",
+  address: "location.streetAddress",
+  avatar: "image.avatar",
+  company: "company.name",
+  jobTitle: "person.jobTitle",
+  createdAt: "date.anytime",
 };
 
 export const useCreateApiForm = () => {
@@ -116,10 +116,7 @@ export const useCreateApiForm = () => {
 
       const jsonData = JSON.parse(result.data);
 
-      const aiGeneratedData = jsonData.schema as [
-        key: string,
-        ResolveValueInput
-      ];
+      const aiGeneratedData = jsonData.schema;
 
       setValue("jsonTemplate", aiGeneratedData);
 
@@ -136,11 +133,6 @@ export const useCreateApiForm = () => {
   };
 
   const onSubmit: SubmitHandler<ApiFormDataType> = async (data) => {
-    if (!data.jsonTemplate || Object.keys(data.jsonTemplate).length === 0) {
-      toast.error("Please provide a JSON template");
-      return;
-    }
-
     setIsLoading(true);
     try {
       await createGhostApi(data);

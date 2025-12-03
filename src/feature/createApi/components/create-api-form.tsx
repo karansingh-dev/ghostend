@@ -20,11 +20,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { FileJson, Sparkles, Zap } from "lucide-react";
 import BasicLoader from "@/components/atoms/basic-loader";
-import { useEffect } from "react";
-
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useCreateApiStorevalue } from "../hooks/useCreateApiStore";
 import { useCreateApiForm } from "../hooks/useCreateApiForm";
+import { faker } from "@faker-js/faker";
+import { fakerOptions } from "@/lib/fakerjs-mapper";
 
 export default function CreateApiForm() {
   const {
@@ -52,11 +53,12 @@ export default function CreateApiForm() {
     formatJson,
     clearJsonTemplate,
     onSubmit,
-    generateAiJson
+    generateAiJson,
   } = useCreateApiForm();
 
+  const [fieldKey, setFieldKey] = useState("");
+  const [fieldMapper, setFieldMapper] = useState("");
 
-  // Keep jsonString in sync
   useEffect(() => {
     try {
       const formatted = JSON.stringify(jsonTemplate, null, 2);
@@ -66,7 +68,21 @@ export default function CreateApiForm() {
     } catch (error) {
       toast.error("Invalid JSON template format");
     }
-  }, [jsonTemplate]);
+  }, [jsonTemplate, setJsonString]);
+
+  const handleAddField = () => {
+    if (!fieldKey.trim() || !fieldMapper) return;
+    try {
+      const current = jsonString.trim() ? JSON.parse(jsonString) : {};
+      const next = { ...current, [fieldKey.trim()]: fieldMapper };
+      const nextString = JSON.stringify(next, null, 2);
+      handleJsonChange(nextString);
+      setFieldKey("");
+      setFieldMapper("");
+    } catch {
+      toast.error("Invalid JSON");
+    }
+  };
 
   return (
     <form
@@ -74,7 +90,6 @@ export default function CreateApiForm() {
       id="createApi"
       className="space-y-10"
     >
-      {/* api configuration  */}
       <Card className="shadow-sm">
         <CardHeader>
           <CardTitle className="text-foreground">
@@ -114,10 +129,10 @@ export default function CreateApiForm() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="GET">GET</SelectItem>
-                  <SelectItem value="POST">POST</SelectItem>
+                  {/* <SelectItem value="POST">POST</SelectItem>
                   <SelectItem value="PUT">PUT</SelectItem>
                   <SelectItem value="PATCH">PATCH</SelectItem>
-                  <SelectItem value="DELETE">DELETE</SelectItem>
+                  <SelectItem value="DELETE">DELETE</SelectItem> */}
                 </SelectContent>
               </Select>
             </div>
@@ -144,12 +159,11 @@ export default function CreateApiForm() {
         </CardContent>
       </Card>
 
-      {/* create api section */}
       <Tabs value={tab} className="space-y-6">
         <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto">
           <TabsTrigger
             value="json"
-            onClick={(e) => {
+            onClick={() => {
               setTab("json");
             }}
             className="flex items-center gap-2"
@@ -159,7 +173,7 @@ export default function CreateApiForm() {
           </TabsTrigger>
           <TabsTrigger
             value="ai"
-            onClick={(e) => {
+            onClick={() => {
               setTab("ai");
             }}
             className="flex items-center gap-2"
@@ -176,7 +190,7 @@ export default function CreateApiForm() {
                 <div className="space-y-2">
                   <CardTitle>JSON Input</CardTitle>
                   <CardDescription>
-                    Define your data structure using our DataMapper types
+                    Define your data structure using faker mappers
                   </CardDescription>
                 </div>
                 <Button
@@ -191,9 +205,47 @@ export default function CreateApiForm() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
+                <div className="space-y-3">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="space-y-1">
+                      <Label>Field key</Label>
+                      <Input
+                        placeholder="name"
+                        value={fieldKey}
+                        onChange={(e) => setFieldKey(e.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-1 md:col-span-2">
+                      <Label>Faker value</Label>
+                      <Select
+                        value={fieldMapper}
+                        onValueChange={(value) => setFieldMapper(value)}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select faker mapper" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {fakerOptions.map((opt) => (
+                            <SelectItem key={opt.value} value={opt.value}>
+                              {opt.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <Button
+                    type="button"
+                    size="sm"
+                    onClick={handleAddField}
+                    disabled={!fieldKey.trim() || !fieldMapper}
+                  >
+                    Add field
+                  </Button>
+                </div>
                 <Textarea
                   className="min-h-[300px] font-mono text-sm"
-                  placeholder='{"name": "fullName", "email": "email", "age": "age"}'
+                  placeholder='{"name": "person.firstName", "email": "internet.email"}'
                   value={jsonString}
                   onChange={(e) => handleJsonChange(e.target.value)}
                 />
@@ -266,7 +318,6 @@ export default function CreateApiForm() {
         </TabsContent>
       </Tabs>
 
-      {/* Submit Button */}
       <div className="flex justify-center">
         <Button
           type="submit"

@@ -1,19 +1,22 @@
-import { ResolveValueInput, ResolveValueOutput } from "@/lib/faker";
-import { resolveValue } from "./resolveValue";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
-export function generateData(
-  jsonTemplate: { [key: string]: ResolveValueInput },
-  count = 1
-): { [key: string]: ResolveValueOutput }[] {
-  const resData: { [key: string]: ResolveValueOutput }[] = [];
+import { faker } from "@faker-js/faker";
 
-  for (let i = 0; i < count; i++) {
-    const data: { [key: string]: ResolveValueOutput } = {};
-    for (const [key, value] of Object.entries(jsonTemplate)) {
-      data[key] = resolveValue(value);
+
+export function generateData(template: Record<string, string>, count: number) {
+  const generateItem = () => {
+    const result: Record<string, any> = {};
+    for (const key in template) {
+      const path = template[key].split(".");
+      let fn: any = faker;
+      for (const p of path) {
+        fn = fn?.[p];
+      }
+      result[key] = typeof fn === "function" ? fn() : null;
     }
-    resData.push(data);
-  }
+    return result;
+  };
 
-  return resData;
+  if (count === 1) return generateItem();
+  return Array.from({ length: count }, generateItem);
 }

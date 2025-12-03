@@ -81,24 +81,3 @@ export const DataMapper = {
   description: () => faker.commerce.productDescription(),
 } as const;
 
-//  all available types
-export function getAvailableTypes() {
-  return Object.keys(DataMapper);
-}
-
-export type DataMapperType = keyof typeof DataMapper;
-
-export type DataMapperReturnTypes = ReturnType<
-  (typeof DataMapper)[DataMapperType]
->;
-
-// Input type for resolveValue - can be a mapper key or a nested object
-export type ResolveValueInput =
-  | DataMapperType
-  | { [key: string]: ResolveValueInput }
-  
-  
-// Return type for resolveValue - can be a primitive value or a nested object
-export type ResolveValueOutput =
-  | DataMapperReturnTypes
-  | { [key: string]: ResolveValueOutput };

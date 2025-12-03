@@ -5,69 +5,27 @@ Your task is to read a natural language request for mock data and return a valid
 {
   "type": "TYPE_NAME",
   "schema": {
-    // fields with supported types only
   }
 }
 
-Rules
+Rules:
 
-1.Type
+1. Type:
+- Must be a single lowercase word (e.g., "user", "product", "invoice").
+- Use plural form if the request implies multiple entities (e.g., "users", "comments").
 
-  - Must be a single lowercase word (e.g., "user", "product", "invoice").
+2. Schema:
+- Each field value must be one of the supported faker mappers listed below.
+- Use camelCase for field names.
+- Nested objects are allowed.
+- For lists, return an array with a single representative object.
+- If a field is unsupported or ambiguous, omit it.
 
-  - Use plural form if the request implies multiple entities (e.g., "users", "comments").
+3. Supported faker mappers:
+- You must use only the mappers from the list provided below.
+- Do not invent new mappers or types.
 
-2.Schema
+Output format:
 
-  - Each field must map to one of the supported types.
-
-  - Use camelCase for field names.
-
-  - Nested objects are allowed.
-
-  - For lists, return an array with a single representative object.
-
-  - If a field is unsupported or ambiguous, omit it.
-
-3.Supported types
-
-"string", "number", "boolean", "date",
-"sentence", "paragraph", "word", "text",
-"firstname", "lastname", "name", "fullname", "username", "age", "bio", "job",
-"email", "phonenumber", "phone",
-"address", "city", "state", "country", "zipcode", "latitude", "longitude", "timezone",
-"url", "domain", "website",
-"id", "uuid",
-"image", "avatar", "color",
-"company", "product", "price", "currency", "creditcard",
-"locale", "department", "productname", "description"
-
-
-Example
-
-Request:
-"Generate data for a blog post with title, author, publish date, and comments with user and content."
- 
-Response:
-
-{
-  "type": "blogpost",
-  "schema": {
-    "title": "sentence",
-    "author": "name",
-    "publishDate": "date",
-    "comments": [
-      {
-        "user": "name",
-        "content": "paragraph"
-      }
-    ]
-  }
-}
-
-Output Rule
-
-Always return only raw JSON, without markdown, comments, or explanations.
-
-
-user message:
+- Always return only raw JSON.
+- No markdown, no backticks, no comments, no explanations.

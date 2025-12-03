@@ -25,7 +25,7 @@ export default function SideBar() {
       icon: BookOpen,
       to: "/documentation",
     },
-    { key: "settings", name: "Settings", icon: Settings, to: "/settings" },
+    // { key: "settings", name: "Settings", icon: Settings, to: "/settings" },
   ];
   return (
     <div className="w-54 bg-background text-foreground min-h-screen border-r flex flex-col gap-2 shadow-md">

@@ -1,16 +1,30 @@
 import { TemplateCard } from "@/feature/templates/components/template-card";
-import { schemaPresets } from "@/feature/templates/constants/presets";
-
+import { schemaPresets } from "@/helpers/schema-presets";
 
 const templateMeta: Record<
   keyof typeof schemaPresets,
   { description: string; endpoints: number }
 > = {
-  user: { description: "Simulated user accounts with profile details.", endpoints: 1 },
-  blogPost: { description: "Blog posts with author, content, and metadata.", endpoints: 1 },
-  ecommerce: { description: "E-commerce products with price, category, and stock info.", endpoints: 1 },
-  socialPost: { description: "Social media posts with user, content, and likes.", endpoints: 1 },
-  analytics: { description: "Analytics events with user activity tracking.", endpoints: 1 },
+  user: {
+    description: "Simulated user accounts with profile details.",
+    endpoints: 1,
+  },
+  blogPost: {
+    description: "Blog posts with author, content, and metadata.",
+    endpoints: 1,
+  },
+  ecommerce: {
+    description: "E-commerce products with price, category, and stock info.",
+    endpoints: 1,
+  },
+  socialPost: {
+    description: "Social media posts with user, content, and likes.",
+    endpoints: 1,
+  },
+  analytics: {
+    description: "Analytics events with user activity tracking.",
+    endpoints: 1,
+  },
 };
 
 export default function Page() {
@@ -28,7 +42,7 @@ export default function Page() {
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {Object.entries(schemaPresets).map(([key]) => {
           const meta = templateMeta[key as keyof typeof schemaPresets];
-          const url = `localhost:3000/api/v1/presets/${key}`;
+          const url = ` ${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/presets/${key}`;
           return (
             <TemplateCard
               key={key}

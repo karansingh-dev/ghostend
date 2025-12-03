@@ -1,9 +1,8 @@
 import { NextRequest } from "next/server";
-import { SchemaPresetType } from "@/feature/templates/constants/presets";
+
 import { generateData } from "@/helpers/dataGenerator";
 import { Response } from "@/helpers/response";
-import { ResolveValueInput } from "@/lib/faker";
-import { schemaPresets } from "@/feature/templates/constants/presets";
+import { schemaPresets, SchemaPresetType } from "@/helpers/schema-presets";
 
 type Params = { endPointName: SchemaPresetType };
 
@@ -19,38 +18,23 @@ export async function GET(
 
     switch (endPointName) {
       case "user":
-        resData = generateData(
-          schemaPresets.user as { [key: string]: ResolveValueInput },
-          count
-        );
+        resData = generateData(schemaPresets.user, count);
         break;
 
       case "blogPost":
-        resData = generateData(
-          schemaPresets.blogPost as { [key: string]: ResolveValueInput },
-          count
-        );
+        resData = generateData(schemaPresets.blogPost, count);
         break;
 
       case "ecommerce":
-        resData = generateData(
-          schemaPresets.ecommerce as { [key: string]: ResolveValueInput },
-          count
-        );
+        resData = generateData(schemaPresets.ecommerce, count);
         break;
 
       case "socialPost":
-        resData = generateData(
-          schemaPresets.socialPost as { [key: string]: ResolveValueInput },
-          count
-        );
+        resData = generateData(schemaPresets.socialPost, count);
         break;
 
       case "analytics":
-        resData = generateData(
-          schemaPresets.analytics as { [key: string]: ResolveValueInput },
-          count
-        );
+        resData = generateData(schemaPresets.analytics, count);
         break;
 
       default:

@@ -38,7 +38,7 @@ export default async function ApiSection({
                     <div className="space-y-2 min-w-160  ">
                       <h3 className="font-semibold">/{api.endPointName}</h3>
                       <p className="text-md text-muted-foreground">
-                        https://ghostend.app/api/v1/{api.apiKey}/
+                        {process.env.NEXT_PUBLIC_BASE_URL}/api/v1/{api.apiKey}/
                         {api.endPointName}
                       </p>
                       <p className="text-xs text-muted-foreground mt-1">

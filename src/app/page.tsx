@@ -1,102 +1,102 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { BarChart3, Code, FolderOpen, Sparkles } from "lucide-react";
+
+export default function LandingPage() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="min-h-screen flex flex-col bg-background text-foreground">
+      {/* Header  */}
+      <header className="w-full border-b px-6 md:px-10 py-4 flex justify-between items-center bg-background/50 backdrop-blur">
+        <div className="flex items-center gap-2">
+          <img src="/assets/ghostend.png" className="h-8" alt="GhostEnd" />
         </div>
+
+        <div className="flex items-center gap-3">
+          <Link href="/dashboard">
+            <Button variant="ghost" size="sm">
+              Sign In
+            </Button>
+          </Link>
+          <Link href="/create-api">
+            <Button size="sm">Get Started</Button>
+          </Link>
+        </div>
+      </header>
+
+      {/* Main  */}
+      <main className="flex-1 flex flex-col items-center mt-20 px-6 text-center">
+        {/* Hero Section  */}
+        <h1 className="text-4xl md:text-6xl font-bold tracking-tight max-w-4xl">
+          Generate Mock APIs <span className="text-primary">in Seconds</span>
+        </h1>
+
+        <p className="text-muted-foreground text-lg max-w-2xl mt-4">
+          Create mock API endpoints with realistic fake data instantly. No
+          backend needed. Built for developers.
+        </p>
+
+        {/* cta button  */}
+        <div className="mt-8 flex gap-4 flex-col sm:flex-row">
+          <Link href="/create-api">
+            <Button size="lg" className="gap-2">
+              <Sparkles className="h-5 w-5" />
+              Create API
+            </Button>
+          </Link>
+
+          <Link href="/documentation">
+            <Button variant="outline" size="lg">
+              Documentation
+            </Button>
+          </Link>
+        </div>
+
+        {/* features section  */}
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mt-24 w-full px-2">
+          <Card className="shadow-sm hover:shadow-md transition">
+            <CardHeader>
+              <BarChart3 className="h-6 w-6 text-primary" />
+              <CardTitle className="mt-3 text-lg">Mock Everything</CardTitle>
+              <CardDescription>
+                Any entity, any dataset. Customize fields, counts, and schemas.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+
+          <Card className="shadow-sm hover:shadow-md transition">
+            <CardHeader>
+              <FolderOpen className="h-6 w-6 text-primary" />
+              <CardTitle className="mt-3 text-lg">Save Endpoints</CardTitle>
+              <CardDescription>
+                Create reusable API endpoints for your dev workflow.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+
+          <Card className="shadow-sm hover:shadow-md transition">
+            <CardHeader>
+              <Code className="h-6 w-6 text-primary" />
+              <CardTitle className="mt-3 text-lg">Developer Friendly</CardTitle>
+              <CardDescription>
+                Simple REST calls, JSON output. Works with any frontend.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </section>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+
+      {/* footer  */}
+      <footer className="px-6 py-6 border-t text-sm text-muted-foreground text-center">
+        © {new Date().getFullYear()} Ghost End. All rights reserved.
       </footer>
     </div>
   );
