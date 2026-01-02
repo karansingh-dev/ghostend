@@ -2,7 +2,6 @@
 
 import { faker } from "@faker-js/faker";
 
-
 export function generateData(template: Record<string, string>, count: number) {
   const generateItem = () => {
     const result: Record<string, any> = {};
